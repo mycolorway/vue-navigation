@@ -5,7 +5,14 @@ export default (keyName) => {
   return {
     name: 'navigation',
     abstract: true,
-    props: {},
+    props: {
+      cacheRoutes: {
+        type: Array,
+        default() {
+          return []
+        }
+      }
+    },
     data: () => ({
       routes: Routes
     }),
@@ -13,7 +20,7 @@ export default (keyName) => {
     watch: {
       routes(val) {
         for (const key in this.cache) {
-          if (!matches(val, key)) {
+          if (!matches(val, key) && !this.cacheRoutes.includes(key)) {
             const vnode = this.cache[key]
             vnode && vnode.componentInstance.$destroy()
             delete this.cache[key]

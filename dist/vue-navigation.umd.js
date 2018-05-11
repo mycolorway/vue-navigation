@@ -192,7 +192,14 @@ var NavComponent = (function (keyName) {
   return {
     name: 'navigation',
     abstract: true,
-    props: {},
+    props: {
+      cacheRoutes: {
+        type: Array,
+        default: function _default() {
+          return [];
+        }
+      }
+    },
     data: function data() {
       return {
         routes: Routes
@@ -202,7 +209,7 @@ var NavComponent = (function (keyName) {
     watch: {
       routes: function routes(val) {
         for (var key in this.cache) {
-          if (!matches(val, key)) {
+          if (!matches(val, key) && !this.cacheRoutes.includes(key)) {
             var vnode = this.cache[key];
             vnode && vnode.componentInstance.$destroy();
             delete this.cache[key];
